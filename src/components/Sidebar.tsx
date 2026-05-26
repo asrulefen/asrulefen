@@ -22,7 +22,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-full md:w-64 bg-white border-t md:border-r border-slate-200 text-slate-900 md:min-h-screen p-2 md:p-4 flex flex-row md:flex-col fixed md:static bottom-0 left-0 right-0 z-50 justify-around md:justify-start">
+    <div className="w-full md:w-64 bg-white border-t md:border-r border-slate-200 text-slate-900 md:min-h-screen py-1.5 px-1 md:p-4 flex flex-row md:flex-col fixed md:static bottom-0 left-0 right-0 z-50 justify-around md:justify-start">
       <div className="hidden md:flex items-center space-x-3 mb-8 px-2">
         <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg">
           TK
@@ -39,24 +39,24 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex flex-col md:flex-row items-center md:space-x-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center",
+                "flex flex-col md:flex-row items-center md:space-x-3 px-1 md:px-3 py-1 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center",
                 active
                   ? "md:bg-emerald-50 text-emerald-600 font-semibold"
                   : "text-slate-400 md:text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
               )}
             >
-              <Icon className="w-6 h-6 md:w-5 md:h-5 mb-1 md:mb-0" />
-              <span className="text-[10px] md:text-base whitespace-nowrap">{item.name}</span>
+              <Icon className="w-5 h-5 md:w-5 md:h-5 mb-0.5 md:mb-0" />
+              <span className="text-[9px] md:text-base whitespace-nowrap">{item.name}</span>
             </Link>
           );
         })}
         
         <button
           onClick={() => signOut({ callbackUrl: '/login' })}
-          className="flex flex-col md:flex-row items-center md:space-x-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center text-red-500 hover:bg-red-50"
+          className="flex flex-col md:flex-row items-center md:space-x-3 px-1 md:px-3 py-1 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center text-red-500 hover:bg-red-50"
         >
-          <LogOut className="w-6 h-6 md:w-5 md:h-5 mb-1 md:mb-0" />
-          <span className="text-[10px] md:text-base whitespace-nowrap">Logout</span>
+          <LogOut className="w-5 h-5 md:w-5 md:h-5 mb-0.5 md:mb-0" />
+          <span className="text-[9px] md:text-base whitespace-nowrap">Logout</span>
         </button>
       </nav>
 
