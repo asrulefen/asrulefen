@@ -126,8 +126,7 @@ export default function LoginPage() {
           <div className="h-px w-8 bg-slate-200"></div>
         </div>
       </div>
-        </div>
-      </div>
     </div>
+  </div>
   );
 }
