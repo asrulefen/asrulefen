@@ -33,8 +33,14 @@ export default function RaportPage() {
   const [activeCropCategory, setActiveCropCategory] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/siswa").then(r => r.json()).then(setSiswaList);
-    fetch("/api/indikator").then(r => r.json()).then(setIndikatorList);
+    fetch("/api/siswa").then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setSiswaList(data);
+      else console.error("Error fetching siswa:", data);
+    });
+    fetch("/api/indikator").then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setIndikatorList(data);
+      else console.error("Error fetching indikator:", data);
+    });
   }, []);
 
   const startTutorial = () => {
