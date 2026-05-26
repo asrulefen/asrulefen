@@ -1,0 +1,8 @@
+# Mencegah akses langsung ke file database SQLite dan file sensitif lainnya
+<FilesMatch "\.(db|sqlite|sqlite3|md|py|sh|json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Blokir akses jika mencoba membuka folder root jika tidak ada index
+Options -Indexes
