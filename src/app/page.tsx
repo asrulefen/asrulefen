@@ -45,23 +45,23 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl sm:rounded-3xl p-4 sm:p-10 text-white shadow-xl flex flex-row items-center">
-        <div className="relative z-10 w-2/3 sm:w-full">
-          <div className="hidden sm:inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium mb-6 border border-white/30 shadow-sm">
+      <div className="relative overflow-hidden bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600 rounded-2xl sm:rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col sm:flex-row items-center text-center sm:text-left">
+        <div className="relative z-10 w-full sm:w-2/3 mb-6 sm:mb-0">
+          <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-white/30 shadow-sm">
             <Sparkles className="w-4 h-4 text-amber-300" />
             <span>Sistem Raport Cerdas AI</span>
           </div>
-          <h1 className="text-lg sm:text-5xl font-extrabold mb-1 sm:mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-5xl font-extrabold mb-2 sm:mb-4 leading-tight">
             Raport Pintar TK
           </h1>
-          <p className="text-emerald-50 max-w-2xl text-[10px] sm:text-lg font-medium opacity-95 leading-tight">
+          <p className="text-emerald-50 max-w-2xl text-sm sm:text-lg font-medium opacity-95 leading-tight mx-auto sm:mx-0">
             Kelola nilai, narasi AI, dan cetak raport sekali klik.
           </p>
         </div>
         
         {/* Animated SVG Graphic */}
-        <div className="w-1/3 sm:absolute sm:right-10 sm:top-1/2 sm:-translate-y-1/2 flex justify-end z-10">
-          <svg className="w-16 h-16 sm:w-48 sm:h-48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <div className="w-full sm:w-1/3 sm:absolute sm:right-10 sm:top-1/2 sm:-translate-y-1/2 flex justify-center sm:justify-end z-10">
+          <svg className="w-40 h-40 sm:w-48 sm:h-48" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <g className="animate-[spin_10s_linear_infinite]">
               <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="2" strokeDasharray="5,5" />
             </g>
@@ -132,35 +132,35 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* Panduan Step-by-step (Hidden on very small screens, visible on md) */}
-      <div className="hidden sm:block bg-gradient-to-r from-emerald-50 to-teal-50 rounded-3xl p-8 border border-emerald-100 shadow-sm mt-8">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-          <BookOpen className="w-6 h-6 mr-3 text-emerald-600" />
+      {/* Panduan Step-by-step */}
+      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-emerald-100 shadow-sm mt-8">
+        <h2 className="text-lg sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6 flex items-center">
+          <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3 text-emerald-600" />
           Panduan Langkah Demi Langkah
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           <div className="relative flex flex-col items-center text-center group">
-            <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">1</div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-sm sm:text-xl mb-2 sm:mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">1</div>
             <div className="hidden md:block absolute top-6 left-[50%] w-full h-[3px] bg-emerald-200 -z-0"></div>
-            <h3 className="font-bold text-slate-800 mb-2">Input Identitas</h3>
-            <p className="text-sm text-slate-600 font-medium leading-relaxed">Buka menu <b>Data Anak</b>, lalu masukkan identitas lengkap siswa yang akan dinilai.</p>
+            <h3 className="font-bold text-slate-800 text-[11px] sm:text-base mb-1 sm:mb-2 leading-tight">Input Identitas</h3>
+            <p className="text-[9px] sm:text-sm text-slate-600 font-medium leading-relaxed">Buka menu <b>Data Anak</b>, lalu masukkan identitas siswa.</p>
           </div>
           <div className="relative flex flex-col items-center text-center group">
-            <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">2</div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-sm sm:text-xl mb-2 sm:mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">2</div>
             <div className="hidden md:block absolute top-6 left-[50%] w-full h-[3px] bg-emerald-200 -z-0"></div>
-            <h3 className="font-bold text-slate-800 mb-2">Pilih & Nilai</h3>
-            <p className="text-sm text-slate-600 font-medium leading-relaxed">Ke menu <b>Isi Raport</b>, pilih nama siswa, lalu pilih nilai (Muncul/Belum Muncul) di tiap poin.</p>
+            <h3 className="font-bold text-slate-800 text-[11px] sm:text-base mb-1 sm:mb-2 leading-tight">Pilih & Nilai</h3>
+            <p className="text-[9px] sm:text-sm text-slate-600 font-medium leading-relaxed">Ke menu <b>Isi Raport</b>, pilih nilai (Muncul/Belum Muncul).</p>
           </div>
           <div className="relative flex flex-col items-center text-center group">
-            <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">3</div>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-sm sm:text-xl mb-2 sm:mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">3</div>
             <div className="hidden md:block absolute top-6 left-[50%] w-full h-[3px] bg-emerald-200 -z-0"></div>
-            <h3 className="font-bold text-slate-800 mb-2">Generate AI & Foto</h3>
-            <p className="text-sm text-slate-600 font-medium leading-relaxed">Klik tombol ungu <b>Generate AI</b> untuk membuat cerita otomatis, lalu klik <b>Tambah Foto</b>.</p>
+            <h3 className="font-bold text-slate-800 text-[11px] sm:text-base mb-1 sm:mb-2 leading-tight">Generate AI</h3>
+            <p className="text-[9px] sm:text-sm text-slate-600 font-medium leading-relaxed">Klik tombol ungu <b>Generate AI</b> untuk cerita otomatis.</p>
           </div>
           <div className="relative flex flex-col items-center text-center group">
-            <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-xl mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">4</div>
-            <h3 className="font-bold text-slate-800 mb-2">Download Word</h3>
-            <p className="text-sm text-slate-600 font-medium leading-relaxed">Gulir ke paling atas, klik <b>Cetak Isi Raport</b>. File siap diprint!</p>
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-black text-sm sm:text-xl mb-2 sm:mb-4 shadow-lg group-hover:scale-110 transition-transform z-10">4</div>
+            <h3 className="font-bold text-slate-800 text-[11px] sm:text-base mb-1 sm:mb-2 leading-tight">Download Word</h3>
+            <p className="text-[9px] sm:text-sm text-slate-600 font-medium leading-relaxed">Klik <b>Cetak Isi Raport</b>. File siap diprint!</p>
           </div>
         </div>
       </div>
