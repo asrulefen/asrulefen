@@ -61,7 +61,7 @@ export const authOptions: AuthOptions = {
     signIn: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
 
 const handler = NextAuth(authOptions);
 
