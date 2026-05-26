@@ -15,7 +15,7 @@ export async function GET() {
     // Gunakan user_id = 1 sebagai fallback (indikator bawaan/global) dan milik user itu sendiri
     const data = await db.execute({
       sql: 'SELECT * FROM indikator WHERE user_id = ? OR user_id = "1" ORDER BY kategori ASC, urutan ASC',
-      args: [userId]
+      args: [userId.toString()]
     });
     return NextResponse.json(data.rows);
   } catch (error) {

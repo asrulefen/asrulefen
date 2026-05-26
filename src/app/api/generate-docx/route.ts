@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     const { siswaId, semester, tanggalRaport, tanggalIdentitas, tinggi, berat, sakit, izin, tanpaKeterangan, teks, fotos } = data;
 
     // Ambil data siswa
-    const siswaRes = await db.execute({ sql: 'SELECT * FROM siswa WHERE id = ? AND user_id = ?', args: [siswaId, userId] });
+    const siswaRes = await db.execute({ sql: 'SELECT * FROM siswa WHERE id = ? AND user_id = ?', args: [siswaId, userId.toString()] });
     const siswa = siswaRes.rows[0] as any;
     if (!siswa) throw new Error("Siswa tidak ditemukan atau bukan milik Anda");
 

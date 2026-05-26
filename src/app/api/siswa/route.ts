@@ -12,7 +12,7 @@ export async function GET() {
     if (userRes.rows.length === 0) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     const userId = userRes.rows[0].id;
 
-    const data = await db.execute({ sql: 'SELECT * FROM siswa WHERE user_id = ? ORDER BY id DESC', args: [userId] });
+    const data = await db.execute({ sql: 'SELECT * FROM siswa WHERE user_id = ? ORDER BY id DESC', args: [userId.toString()] });
     return NextResponse.json(data.rows);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch siswa' }, { status: 500 });
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     const userId = userRes.rows[0].id;
 
     const body = await req.json();
-    body.user_id = userId;
+    body.user_id = userId.toString();
 
     const insert = await db.execute({
       sql: `INSERT INTO siswa (
