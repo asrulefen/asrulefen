@@ -78,7 +78,7 @@ export default function LoginPage() {
               <input 
                 type="email" 
                 required
-                className="w-full bg-white text-slate-800 px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 transition-all outline-none placeholder-slate-400 shadow-sm"
+                className="w-full bg-white text-slate-800 text-[16px] px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 transition-all outline-none placeholder-slate-400 shadow-sm"
                 placeholder="nama@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +92,7 @@ export default function LoginPage() {
               <input 
                 type="password" 
                 required
-                className="w-full bg-white text-slate-800 px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 transition-all outline-none placeholder-slate-400 shadow-sm"
+                className="w-full bg-white text-slate-800 text-[16px] px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-emerald-400 focus:ring-0 transition-all outline-none placeholder-slate-400 shadow-sm"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
