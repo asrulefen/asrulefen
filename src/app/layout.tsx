@@ -18,10 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={`${inter.className} bg-slate-50 text-slate-900 flex min-h-screen`}>
+      <body className={`${inter.className} bg-slate-50 text-slate-900 flex flex-col md:flex-row min-h-screen`}>
         <AuthProvider>
           <Sidebar />
-          <main className="flex-1 p-8 overflow-y-auto h-screen">
+          <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8 overflow-y-auto h-screen">
           <div className="max-w-6xl mx-auto">
             {children}
             

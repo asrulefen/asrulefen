@@ -21,15 +21,15 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="w-64 bg-white border-r border-slate-200 text-slate-900 min-h-screen p-4 flex flex-col">
-      <div className="flex items-center space-x-3 mb-8 px-2">
+    <div className="w-full md:w-64 bg-white border-t md:border-r border-slate-200 text-slate-900 md:min-h-screen p-2 md:p-4 flex flex-row md:flex-col fixed md:static bottom-0 left-0 right-0 z-50 justify-around md:justify-start">
+      <div className="hidden md:flex items-center space-x-3 mb-8 px-2">
         <div className="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-lg">
           TK
         </div>
         <h1 className="text-lg font-bold tracking-tight text-slate-800">PGRI Nur Ikhlas</h1>
       </div>
 
-      <nav className="flex-1 space-y-2">
+      <nav className="flex-1 flex flex-row md:flex-col justify-around md:justify-start w-full md:w-auto md:space-y-2">
         {menu.map((item) => {
           const active = pathname === item.href;
           const Icon = item.icon;
@@ -38,20 +38,20 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors",
+                "flex flex-col md:flex-row items-center md:space-x-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center",
                 active
-                  ? "bg-emerald-50 text-emerald-600 font-semibold"
-                  : "text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
+                  ? "md:bg-emerald-50 text-emerald-600 font-semibold"
+                  : "text-slate-400 md:text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
               )}
             >
-              <Icon className="w-5 h-5" />
-              <span>{item.name}</span>
+              <Icon className="w-6 h-6 md:w-5 md:h-5 mb-1 md:mb-0" />
+              <span className="text-[10px] md:text-base whitespace-nowrap">{item.name}</span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="mt-auto pt-4 border-t border-slate-200 text-xs text-slate-500 text-center font-medium">
+      <div className="hidden md:block mt-auto pt-4 border-t border-slate-200 text-xs text-slate-500 text-center font-medium">
         Versi 1.0.0 &copy; 2026
       </div>
     </div>
