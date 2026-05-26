@@ -154,21 +154,21 @@ export default function RaportPage() {
     const maxFotos = 9;
     
     return (
-      <div className="bg-white p-4 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-200 mt-4 sm:mt-8 space-y-5 sm:space-y-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-800 border-b border-slate-100 pb-2 sm:pb-4">{title}</h2>
+      <div className="bg-white p-2.5 sm:p-8 rounded-xl sm:rounded-3xl shadow-sm border border-slate-200 mt-3 sm:mt-8 space-y-3 sm:space-y-8">
+        <h2 className="text-lg sm:text-2xl font-bold text-slate-800 border-b border-slate-100 pb-1.5 sm:pb-4">{title}</h2>
         
         {/* Indikator Selection */}
-        <div className="space-y-2 sm:space-y-4">
+        <div className="space-y-1.5 sm:space-y-4">
           <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs sm:text-base">1</div>
-            <h3 className="font-bold text-slate-700 text-base sm:text-lg">Penilaian Indikator</h3>
+            <div className="w-5 h-5 sm:w-8 sm:h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-[10px] sm:text-base">1</div>
+            <h3 className="font-bold text-slate-700 text-sm sm:text-lg">Penilaian Indikator</h3>
           </div>
-          <div id={kategoriKey === 'agama' ? 'step-nilai-indikator' : ''} className="bg-slate-50 p-3 sm:p-5 rounded-2xl border border-slate-200 space-y-2 sm:space-y-3">
+          <div id={kategoriKey === 'agama' ? 'step-nilai-indikator' : ''} className="bg-slate-50 p-2 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-200 space-y-1 sm:space-y-3">
             {kIndikator.map(ind => (
-              <div key={ind.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 border-b border-slate-200 pb-2 sm:pb-3 last:border-0 last:pb-0">
-                <span className="text-xs sm:text-sm font-medium text-slate-700 w-full sm:w-1/2 leading-tight">{ind.deskripsi}</span>
+              <div key={ind.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-0.5 sm:gap-3 border-b border-slate-200 pb-1.5 sm:pb-3 last:border-0 last:pb-0">
+                <span className="text-[11px] sm:text-sm font-medium text-slate-700 w-full sm:w-1/2 leading-tight">{ind.deskripsi}</span>
                 <select 
-                  className="p-1.5 sm:p-2.5 text-xs sm:text-sm border-2 border-slate-200 rounded-xl w-full sm:w-1/2 focus:ring-0 focus:border-emerald-500 transition-colors font-medium text-slate-700"
+                  className="p-1 sm:p-2.5 text-[11px] sm:text-sm border-2 border-slate-200 rounded-lg sm:rounded-xl w-full sm:w-1/2 focus:ring-0 focus:border-emerald-500 transition-colors font-medium text-slate-700"
                   value={nilai[ind.id] || ""}
                   onChange={(e) => setNilai(prev => ({...prev, [ind.id]: e.target.value}))}
                 >
@@ -184,25 +184,25 @@ export default function RaportPage() {
         </div>
 
         {/* AI Generator */}
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-4 justify-between items-center">
+        <div className="space-y-2 sm:space-y-4">
+          <div className="flex flex-wrap gap-2 sm:gap-4 justify-between items-center">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold">2</div>
-              <h3 className="font-bold text-slate-700 text-lg">Narasi Perkembangan</h3>
+              <div className="w-5 h-5 sm:w-8 sm:h-8 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center font-bold text-[10px] sm:text-base">2</div>
+              <h3 className="font-bold text-slate-700 text-sm sm:text-lg">Narasi Perkembangan</h3>
             </div>
             <button 
               id={kategoriKey === 'agama' ? 'step-generate-ai' : ''}
               onClick={() => handleGenerateNarasi(kategoriMap, kategoriKey)}
               disabled={isGenerating[kategoriKey]}
-              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2.5 rounded-xl flex items-center shadow-md disabled:opacity-50 transition-all active:scale-95"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-3 py-1.5 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-base flex items-center shadow-md disabled:opacity-50 transition-all active:scale-95"
             >
-              {isGenerating[kategoriKey] ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Wand2 className="w-5 h-5 mr-2" />}
+              {isGenerating[kategoriKey] ? <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2 animate-spin" /> : <Wand2 className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />}
               Generate AI Narasi
             </button>
           </div>
           <textarea 
-            rows={5}
-            className="w-full p-4 border-2 border-slate-200 rounded-2xl focus:ring-0 focus:border-purple-500 transition-colors leading-relaxed text-slate-700 font-medium"
+            rows={4}
+            className="w-full p-2.5 sm:p-4 text-xs sm:text-base border-2 border-slate-200 rounded-xl sm:rounded-2xl focus:ring-0 focus:border-purple-500 transition-colors leading-relaxed text-slate-700 font-medium"
             value={teks[kategoriKey]}
             onChange={e => setTeks(prev => ({ ...prev, [kategoriKey]: e.target.value }))}
             placeholder="Klik tombol Generate AI atau ketik narasi secara manual di sini..."
@@ -210,13 +210,13 @@ export default function RaportPage() {
         </div>
 
         {/* Photos (Dynamic 1 to 9) */}
-        <div className="space-y-2 sm:space-y-4">
+        <div className="space-y-1.5 sm:space-y-4">
           <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xs sm:text-base">3</div>
-            <h3 className="font-bold text-slate-700 text-base sm:text-lg">Foto <span className="text-slate-400 font-normal text-xs sm:text-sm">(Maks 9)</span></h3>
+            <div className="w-5 h-5 sm:w-8 sm:h-8 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-[10px] sm:text-base">3</div>
+            <h3 className="font-bold text-slate-700 text-sm sm:text-lg">Foto <span className="text-slate-400 font-normal text-[10px] sm:text-sm">(Maks 9)</span></h3>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
             {currentFotos.map((foto, index) => (
               <div key={index} className="relative group w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 border-slate-200 shadow-sm">
                 <img src={foto} alt={`Foto ${index+1}`} className="w-full h-full object-cover" />
