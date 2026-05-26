@@ -17,7 +17,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     
     await db.execute({
       sql: 'UPDATE indikator SET kategori = ?, deskripsi = ?, urutan = ? WHERE id = ? AND user_id = ?',
-      args: [data.kategori, data.deskripsi, data.urutan, params.id, userId]
+      args: [data.kategori, data.deskripsi, data.urutan, params.id, userId.toString()]
     });
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -37,7 +37,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
     const params = await context.params;
     await db.execute({
       sql: 'DELETE FROM indikator WHERE id = ? AND user_id = ?',
-      args: [params.id, userId]
+      args: [params.id, userId.toString()]
     });
     return NextResponse.json({ success: true });
   } catch (error) {

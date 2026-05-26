@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, FileText, Settings, LayoutDashboard, ListChecks } from "lucide-react";
+import { Users, FileText, Settings, LayoutDashboard, ListChecks, LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -49,6 +50,14 @@ export function Sidebar() {
             </Link>
           );
         })}
+        
+        <button
+          onClick={() => signOut({ callbackUrl: '/login' })}
+          className="flex flex-col md:flex-row items-center md:space-x-3 px-2 md:px-3 py-2 md:py-2.5 rounded-lg transition-colors flex-1 md:flex-none justify-center text-red-500 hover:bg-red-50"
+        >
+          <LogOut className="w-6 h-6 md:w-5 md:h-5 mb-1 md:mb-0" />
+          <span className="text-[10px] md:text-base whitespace-nowrap">Logout</span>
+        </button>
       </nav>
 
       <div className="hidden md:block mt-auto pt-4 border-t border-slate-200 text-xs text-slate-500 text-center font-medium">

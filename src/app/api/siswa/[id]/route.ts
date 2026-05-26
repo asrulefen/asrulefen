@@ -32,7 +32,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
         data.nama_ayah, data.nama_ibu, data.pekerjaan_ayah,
         data.pekerjaan_ibu, data.alamat, data.desa,
         data.kecamatan, data.kabupaten, data.provinsi, data.telepon,
-        params.id, userId
+        params.id, userId.toString()
       ]
     });
     return NextResponse.json({ success: true });
@@ -52,7 +52,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
     const userId = userRes.rows[0].id;
 
     const params = await context.params;
-    await db.execute({ sql: 'DELETE FROM siswa WHERE id = ? AND user_id = ?', args: [params.id, userId] });
+    await db.execute({ sql: 'DELETE FROM siswa WHERE id = ? AND user_id = ?', args: [params.id, userId.toString()] });
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);
