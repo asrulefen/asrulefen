@@ -12,6 +12,8 @@ function cn(...inputs: ClassValue[]) {
 
 export function Sidebar() {
   const pathname = usePathname();
+  
+  if (pathname === '/login' || pathname === '/register') return null;
 
   const menu = [
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
