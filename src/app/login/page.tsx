@@ -31,7 +31,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen w-full relative flex items-center justify-center overflow-hidden bg-white">
+    <div className="fixed inset-0 w-full flex items-center justify-center overflow-y-auto overflow-x-hidden bg-white py-8">
+      <div className="min-h-full w-full flex flex-col items-center justify-center relative">
       {/* Background Animasi Bergerak (Soft Light Theme) */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-300/40 rounded-full blur-[100px] animate-[pulse_8s_ease-in-out_infinite]"></div>
@@ -42,7 +43,7 @@ export default function LoginPage() {
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMCwwLDAsMC4wNCkiLz48L3N2Zz4=')] opacity-50 animate-[spin_120s_linear_infinite]"></div>
       </div>
 
-      <div className="z-10 w-full max-w-md px-4 relative flex flex-col justify-center">
+      <div className="z-10 w-full max-w-md px-4 relative flex flex-col justify-center my-auto">
         
         <div className="bg-white/70 backdrop-blur-2xl border border-white/50 p-6 sm:p-8 rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] relative overflow-hidden">
           {/* Glass Reflection effect */}
@@ -52,9 +53,10 @@ export default function LoginPage() {
             <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-2xl mb-3 shadow-lg shadow-emerald-200 transform transition-transform hover:scale-110 hover:rotate-3">
               <BookOpen className="w-7 h-7 text-white" />
             </div>
-            <h1 className="text-3xl font-black text-slate-800 mb-1 tracking-tight flex items-center justify-center gap-2">
+            <h1 className="text-3xl font-black text-slate-800 tracking-tight flex items-center justify-center gap-2">
               Raport <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-500">Pintar</span>
             </h1>
+            <h2 className="text-base sm:text-lg font-bold text-slate-600 mb-2">TK PGRI</h2>
             <div className="flex items-center justify-center gap-1.5 text-emerald-600 text-xs sm:text-sm font-bold">
               <Sparkles className="w-4 h-4 text-amber-500" />
               <span>Sistem Penilaian AI</span>
@@ -122,6 +124,8 @@ export default function LoginPage() {
           <div className="h-px w-8 bg-slate-200"></div>
           Dikembangkan oleh Asrulefen
           <div className="h-px w-8 bg-slate-200"></div>
+        </div>
+      </div>
         </div>
       </div>
     </div>
