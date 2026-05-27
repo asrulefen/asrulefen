@@ -7,7 +7,7 @@ export async function generateNarasi(kategori: string, namaSiswa: string, indika
     let modelName = "gemini-1.5-flash"; // default fallback
 
     try {
-      const data = await db.execute('SELECT key, value FROM pengaturan WHERE key IN ("gemini_api_key", "gemini_model")');
+      const data = await db.execute("SELECT key, value FROM pengaturan WHERE key IN ('gemini_api_key', 'gemini_model')");
       const settings = data.rows.reduce((acc: any, curr: any) => {
         acc[curr.key] = curr.value;
         return acc;
