@@ -25,7 +25,8 @@ export default function PengaturanPage() {
     desa_lembaga: "PRUNGGAHAN KULON",
     kec_lembaga: "SEMANDING",
     kab_lembaga: "TUBAN",
-    prov_lembaga: "JAWA TIMUR"
+    prov_lembaga: "JAWA TIMUR",
+    gemini_model: "gemini-1.5-flash"
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +103,40 @@ export default function PengaturanPage() {
 
       <form onSubmit={handleSave} className="space-y-6">
 
+
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+          <h2 className="font-bold border-b pb-2 text-slate-700">Pengaturan AI (Gemini)</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-1 text-emerald-700">Gemini API Key</label>
+              <input 
+                type="text" 
+                className="w-full p-2 border-2 border-slate-200 rounded-lg" 
+                value={settings.gemini_api_key || ""} 
+                onChange={e => setSettings({...settings, gemini_api_key: e.target.value})}
+                placeholder="Paste API Key Gemini Anda di sini..."
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Dapatkan API key secara gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Google AI Studio</a>.
+              </p>
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium mb-1 text-emerald-700">Model AI</label>
+              <select 
+                className="w-full p-2 border-2 border-slate-200 rounded-lg"
+                value={settings.gemini_model || "gemini-1.5-flash"}
+                onChange={e => setSettings({...settings, gemini_model: e.target.value})}
+              >
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Cepat & Direkomendasikan)</option>
+                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Lebih Pintar)</option>
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+              </select>
+              <p className="text-xs text-slate-500 mt-1">Pilih model AI yang akan digunakan untuk menggenerate narasi raport.</p>
+            </div>
+          </div>
+        </div>
 
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
           <h2 className="font-bold border-b pb-2 text-slate-700">Data Sekolah & Guru</h2>

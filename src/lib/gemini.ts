@@ -1,11 +1,30 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import db from "./db";
 
 export async function generateNarasi(kategori: string, namaSiswa: string, indikatorData: {deskripsi: string, nilai: string}[]) {
   try {
-    // Menggunakan API Key yang ditanam langsung
-    const apiKey = "AIzaSyCMSO61HHQWYiHEWrJnNYdOIsAvTcSes10";
+    let apiKey = process.env.GEMINI_API_KEY || "";
+    let modelName = "gemini-1.5-flash"; // default fallback
+
+    try {
+      const data = await db.execute('SELECT key, value FROM pengaturan WHERE key IN ("gemini_api_key", "gemini_model")');
+      const settings = data.rows.reduce((acc: any, curr: any) => {
+        acc[curr.key] = curr.value;
+        return acc;
+      }, {});
+      
+      if (settings.gemini_api_key && settings.gemini_api_key.trim() !== "") {
+        apiKey = settings.gemini_api_key;
+      }
+      if (settings.gemini_model && settings.gemini_model.trim() !== "") {
+        modelName = settings.gemini_model;
+      }
+    } catch (dbError) {
+      console.error("Gagal mengambil pengaturan API dari database", dbError);
+    }
+
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+    const model = genAI.getGenerativeModel({ model: modelName });
 
     const indikatorText = indikatorData.map(i => `- ${i.deskripsi}: ${i.nilai}`).join("\n");
 
