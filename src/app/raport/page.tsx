@@ -41,7 +41,24 @@ export default function RaportPage() {
       if (Array.isArray(data)) setIndikatorList(data);
       else console.error("Error fetching indikator:", data);
     });
+    fetch("/api/pengaturan").then(r => r.json()).then(data => {
+      if (data.semester) setSemester(data.semester);
+      if (data.tanggal_raport) setTanggalRaport(data.tanggal_raport);
+      if (data.tanggal_identitas) setTanggalIdentitas(data.tanggal_identitas);
+    });
   }, []);
+
+  const savePengaturan = async (key: string, value: string) => {
+    try {
+      await fetch("/api/pengaturan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ [key]: value })
+      });
+    } catch (e) {
+      console.error("Gagal menyimpan pengaturan", e);
+    }
+  };
 
   const startTutorial = () => {
     const driverObj = driver({
@@ -318,15 +335,15 @@ export default function RaportPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Semester / TA</label>
-                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={semester} onChange={e => setSemester(e.target.value)} />
+                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={semester} onChange={e => setSemester(e.target.value)} onBlur={() => savePengaturan("semester", semester)} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Tanggal Raport</label>
-                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={tanggalRaport} onChange={e => setTanggalRaport(e.target.value)} />
+                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={tanggalRaport} onChange={e => setTanggalRaport(e.target.value)} onBlur={() => savePengaturan("tanggal_raport", tanggalRaport)} />
               </div>
               <div className="col-span-2">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Tanggal Cetak Identitas (Lembar Depan)</label>
-                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={tanggalIdentitas} onChange={e => setTanggalIdentitas(e.target.value)} />
+                <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={tanggalIdentitas} onChange={e => setTanggalIdentitas(e.target.value)} onBlur={() => savePengaturan("tanggal_identitas", tanggalIdentitas)} />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">

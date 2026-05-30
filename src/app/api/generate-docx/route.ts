@@ -178,11 +178,25 @@ export async function POST(req: Request) {
     docGabungan.render(templateData);
     const bufGabungan = docGabungan.getZip().generate({ type: 'nodebuffer' });
 
+    // Bersihkan arsip yang lebih tua dari 6 bulan (hanya untuk user ini agar aman)
+    await db.execute({
+      sql: "DELETE FROM arsip_raport WHERE user_id = ? AND created_at <= date('now', '-6 month')",
+      args: [userId.toString()]
+    });
+
+    const filename = `Raport_${siswa.nama_lengkap}.docx`;
+
+    // Simpan ke arsip
+    await db.execute({
+      sql: "INSERT INTO arsip_raport (user_id, siswa_id, nama_siswa, semester, jenis, file_name, data_json) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      args: [userId.toString(), siswaId, siswa.nama_lengkap, semester, 'Lengkap', filename, JSON.stringify(data)]
+    });
+
     return NextResponse.json({
       depanBase64: bufDepan.toString('base64'),
       raportBase64: bufRaport.toString('base64'),
       gabunganBase64: bufGabungan.toString('base64'),
-      filename: `Raport_${siswa.nama_lengkap}.docx`
+      filename: filename
     });
   } catch (error: any) {
     console.error("Docx Gen Error:", error);

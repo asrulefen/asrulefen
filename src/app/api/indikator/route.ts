@@ -36,7 +36,7 @@ export async function POST(req: Request) {
     
     const insert = await db.execute({
       sql: 'INSERT INTO indikator (kategori, deskripsi, urutan, user_id) VALUES (?, ?, ?, ?)',
-      args: [data.kategori, data.deskripsi, data.urutan, userId]
+      args: [data.kategori, data.deskripsi, data.urutan, userId.toString()]
     });
     return NextResponse.json({ id: insert.lastInsertRowid?.toString() });
   } catch (error) {

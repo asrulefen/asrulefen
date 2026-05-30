@@ -16,7 +16,7 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     const data = await req.json();
     
     await db.execute({
-      sql: 'UPDATE indikator SET kategori = ?, deskripsi = ?, urutan = ? WHERE id = ? AND user_id = ?',
+      sql: 'UPDATE indikator SET kategori = ?, deskripsi = ?, urutan = ? WHERE id = ? AND (user_id = ? OR user_id = \'1\')',
       args: [data.kategori, data.deskripsi, data.urutan, params.id, userId.toString()]
     });
     return NextResponse.json({ success: true });
@@ -36,7 +36,7 @@ export async function DELETE(req: Request, context: { params: Promise<{ id: stri
 
     const params = await context.params;
     await db.execute({
-      sql: 'DELETE FROM indikator WHERE id = ? AND user_id = ?',
+      sql: 'DELETE FROM indikator WHERE id = ? AND (user_id = ? OR user_id = \'1\')',
       args: [params.id, userId.toString()]
     });
     return NextResponse.json({ success: true });
