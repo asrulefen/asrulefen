@@ -16,6 +16,7 @@ export default function RaportPage() {
   const [izin, setIzin] = useState("0");
   const [tanpaKeterangan, setTanpaKeterangan] = useState("0");
   const [semester, setSemester] = useState("I / 2025-2026");
+  const [semesterIndikator, setSemesterIndikator] = useState("1");
   const [tanggalRaport, setTanggalRaport] = useState("Tuban, 20 Desember 2026");
   const [tanggalIdentitas, setTanggalIdentitas] = useState("Tuban, 14 Juli 2025");
 
@@ -37,16 +38,20 @@ export default function RaportPage() {
       if (Array.isArray(data)) setSiswaList(data);
       else console.error("Error fetching siswa:", data);
     });
-    fetch("/api/indikator").then(r => r.json()).then(data => {
-      if (Array.isArray(data)) setIndikatorList(data);
-      else console.error("Error fetching indikator:", data);
-    });
     fetch("/api/pengaturan").then(r => r.json()).then(data => {
       if (data.semester) setSemester(data.semester);
       if (data.tanggal_raport) setTanggalRaport(data.tanggal_raport);
       if (data.tanggal_identitas) setTanggalIdentitas(data.tanggal_identitas);
     });
   }, []);
+
+  useEffect(() => {
+    fetch(`/api/indikator?semester=${semesterIndikator}`).then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setIndikatorList(data);
+      else console.error("Error fetching indikator:", data);
+    });
+  }, [semesterIndikator]);
+
 
   const savePengaturan = async (key: string, value: string) => {
     try {
@@ -344,6 +349,17 @@ export default function RaportPage() {
               <div className="col-span-2">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Tanggal Cetak Identitas (Lembar Depan)</label>
                 <input type="text" className="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-emerald-500 transition-colors font-medium" value={tanggalIdentitas} onChange={e => setTanggalIdentitas(e.target.value)} onBlur={() => savePengaturan("tanggal_identitas", tanggalIdentitas)} />
+              </div>
+              <div className="col-span-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">Pilih Indikator Semester Berapa?</label>
+                <select 
+                  className="w-full p-3 border-2 border-slate-200 rounded-xl bg-slate-50 focus:ring-0 focus:border-emerald-500 font-semibold text-slate-700 transition-colors"
+                  value={semesterIndikator}
+                  onChange={e => setSemesterIndikator(e.target.value)}
+                >
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                </select>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">

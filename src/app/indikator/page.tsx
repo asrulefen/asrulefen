@@ -7,6 +7,7 @@ type Indikator = {
   kategori: string;
   deskripsi: string;
   urutan: number;
+  semester?: string;
 };
 
 const kategoriList = ["AGAMA", "JATI_DIRI", "LITERASI", "PROJEK"];
@@ -14,10 +15,11 @@ const kategoriList = ["AGAMA", "JATI_DIRI", "LITERASI", "PROJEK"];
 export default function IndikatorPage() {
   const [indikator, setIndikator] = useState<Indikator[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState<Indikator>({ kategori: "AGAMA", deskripsi: "", urutan: 1 });
+  const [selectedSemester, setSelectedSemester] = useState("1");
+  const [formData, setFormData] = useState<Indikator>({ kategori: "AGAMA", deskripsi: "", urutan: 1, semester: "1" });
 
   const fetchIndikator = async () => {
-    const res = await fetch("/api/indikator");
+    const res = await fetch(`/api/indikator?semester=${selectedSemester}`);
     if (res.ok) {
       setIndikator(await res.json());
     }
@@ -25,7 +27,7 @@ export default function IndikatorPage() {
 
   useEffect(() => {
     fetchIndikator();
-  }, []);
+  }, [selectedSemester]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +37,7 @@ export default function IndikatorPage() {
     await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData)
+      body: JSON.stringify({ ...formData, semester: selectedSemester })
     });
     
     setIsModalOpen(false);
@@ -50,24 +52,34 @@ export default function IndikatorPage() {
   };
 
   const openModal = (ind: Indikator | null = null) => {
-    setFormData(ind || { kategori: "AGAMA", deskripsi: "", urutan: 1 });
+    setFormData(ind || { kategori: "AGAMA", deskripsi: "", urutan: 1, semester: selectedSemester });
     setIsModalOpen(true);
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold">Indikator Penilaian</h1>
           <p className="text-slate-500">Kelola acuan indikator sesuai dengan kurikulum saat ini</p>
         </div>
-        <button
-          onClick={() => openModal()}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-sm"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Tambah Indikator</span>
-        </button>
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          <select 
+            className="p-2 border-2 border-slate-200 rounded-lg bg-slate-50 font-semibold text-slate-700"
+            value={selectedSemester}
+            onChange={(e) => setSelectedSemester(e.target.value)}
+          >
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+          <button
+            onClick={() => openModal()}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-sm whitespace-nowrap"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Tambah Indikator</span>
+          </button>
+        </div>
       </div>
 
       <div className="space-y-8">

@@ -16,8 +16,8 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
     const data = await req.json();
     
     await db.execute({
-      sql: 'UPDATE indikator SET kategori = ?, deskripsi = ?, urutan = ? WHERE id = ? AND (user_id = ? OR user_id = \'1\')',
-      args: [data.kategori, data.deskripsi, data.urutan, params.id, userId.toString()]
+      sql: 'UPDATE indikator SET kategori = ?, deskripsi = ?, urutan = ?, semester = ? WHERE id = ? AND (user_id = ? OR user_id = \'1\')',
+      args: [data.kategori, data.deskripsi, data.urutan, data.semester || '1', params.id, userId.toString()]
     });
     return NextResponse.json({ success: true });
   } catch (error) {
