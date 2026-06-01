@@ -55,7 +55,7 @@ export async function POST(req: Request) {
           data.kabupaten?.toString() || "",
           data.provinsi?.toString() || "",
           data.telepon?.toString() || "",
-          userId
+          userId.toString()
         ]
       });
       imported++;
