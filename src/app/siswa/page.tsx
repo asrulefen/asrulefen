@@ -40,11 +40,16 @@ export default function SiswaPage() {
   const [formData, setFormData] = useState<Siswa>(emptySiswa);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isImporting, setIsImporting] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [isDeletingBatch, setIsDeletingBatch] = useState(false);
 
   const fetchSiswa = async () => {
     const res = await fetch("/api/siswa");
     if (res.ok) {
-      setSiswa(await res.json());
+      const data = await res.json();
+      setSiswa(data);
+      // Reset selection when data changes
+      setSelectedIds([]);
     }
   };
 
@@ -77,6 +82,43 @@ export default function SiswaPage() {
   const openModal = (s: Siswa | null = null) => {
     setFormData(s || emptySiswa);
     setIsModalOpen(true);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === siswa.length && siswa.length > 0) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(siswa.map(s => s.id!).filter(id => id !== undefined));
+    }
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
+  const handleBatchDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (confirm(`Yakin ingin menghapus ${selectedIds.length} siswa terpilih?`)) {
+      setIsDeletingBatch(true);
+      try {
+        const res = await fetch("/api/siswa/batch-delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ids: selectedIds })
+        });
+        if (res.ok) {
+          fetchSiswa();
+        } else {
+          alert("Gagal menghapus beberapa data.");
+        }
+      } catch (e) {
+        alert("Terjadi kesalahan.");
+      } finally {
+        setIsDeletingBatch(false);
+      }
+    }
   };
 
   const downloadTemplate = () => {
@@ -134,6 +176,17 @@ export default function SiswaPage() {
           <p className="text-slate-500">Kelola identitas siswa TK PGRI Nur Ikhlas</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          {selectedIds.length > 0 && (
+            <button
+              onClick={handleBatchDelete}
+              disabled={isDeletingBatch}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-sm disabled:opacity-50"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span className="text-sm font-medium">Hapus Terpilih ({selectedIds.length})</span>
+            </button>
+          )}
+
           <button
             onClick={downloadTemplate}
             className="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors shadow-sm"
@@ -173,6 +226,14 @@ export default function SiswaPage() {
           <table className="w-full text-sm text-left whitespace-nowrap">
             <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase text-xs tracking-wider">
               <tr>
+                <th className="px-6 py-4 font-semibold w-10">
+                  <input 
+                    type="checkbox" 
+                    className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                    checked={siswa.length > 0 && selectedIds.length === siswa.length}
+                    onChange={toggleSelectAll}
+                  />
+                </th>
                 <th className="px-6 py-4 font-semibold">Nama Lengkap</th>
                 <th className="px-6 py-4 font-semibold">Kelompok</th>
                 <th className="px-6 py-4 font-semibold">NISN</th>
@@ -184,6 +245,14 @@ export default function SiswaPage() {
             <tbody className="divide-y divide-slate-100">
               {siswa.map((s) => (
                 <tr key={s.id} className="hover:bg-slate-50 transition-colors">
+                  <td className="px-6 py-4">
+                    <input 
+                      type="checkbox" 
+                      className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 w-4 h-4 cursor-pointer"
+                      checked={s.id ? selectedIds.includes(s.id) : false}
+                      onChange={() => s.id && toggleSelect(s.id)}
+                    />
+                  </td>
                   <td className="px-6 py-4 font-semibold text-slate-800">{s.nama_lengkap}</td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-1 bg-slate-100 rounded text-slate-700 text-xs font-bold">{s.kelompok}</span>
@@ -203,7 +272,7 @@ export default function SiswaPage() {
               ))}
               {siswa.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center">
+                  <td colSpan={7} className="px-6 py-12 text-center">
                     <div className="inline-flex flex-col items-center justify-center text-slate-400">
                       <Users className="w-12 h-12 mb-3 opacity-20" />
                       <p className="text-base font-medium text-slate-500">Belum ada data siswa</p>
