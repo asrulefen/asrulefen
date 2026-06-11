@@ -1,30 +1,35 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import db from "./db";
+
+const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const DEFAULT_API_KEY = process.env.OPENROUTER_API_KEY || "";
+const MODELS_TO_TRY = [
+  "google/gemini-2.0-flash-001",
+  "google/gemini-2.5-flash",
+  "meta-llama/llama-3.1-8b-instruct",
+  "mistralai/mistral-7b-instruct",
+];
 
 export async function generateNarasi(kategori: string, namaSiswa: string, indikatorData: {deskripsi: string, nilai: string}[]) {
   try {
-    let apiKey = process.env.GEMINI_API_KEY || "";
-    let modelName = "gemini-1.5-flash"; // default fallback
+    let apiKey = DEFAULT_API_KEY;
+    let primaryModel = MODELS_TO_TRY[0];
 
     try {
-      const data = await db.execute("SELECT key, value FROM pengaturan WHERE key IN ('gemini_api_key', 'gemini_model')");
+      const data = await db.execute("SELECT key, value FROM pengaturan WHERE key IN ('openrouter_api_key', 'ai_model')");
       const settings = data.rows.reduce((acc: any, curr: any) => {
         acc[curr.key] = curr.value;
         return acc;
       }, {});
       
-      if (settings.gemini_api_key && settings.gemini_api_key.trim() !== "") {
-        apiKey = settings.gemini_api_key;
+      if (settings.openrouter_api_key && settings.openrouter_api_key.trim() !== "") {
+        apiKey = settings.openrouter_api_key;
       }
-      if (settings.gemini_model && settings.gemini_model.trim() !== "") {
-        modelName = settings.gemini_model;
+      if (settings.ai_model && settings.ai_model.trim() !== "") {
+        primaryModel = settings.ai_model;
       }
     } catch (dbError) {
       console.error("Gagal mengambil pengaturan API dari database", dbError);
     }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: modelName });
 
     const indikatorText = indikatorData.map(i => `- ${i.deskripsi}: ${i.nilai}`).join("\n");
 
@@ -32,8 +37,9 @@ export async function generateNarasi(kategori: string, namaSiswa: string, indika
     const titleCaseName = namaSiswa.toLowerCase().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
     const firstName = titleCaseName.split(' ')[0]; // Ambil kata pertama untuk panggilan
 
-    const prompt = `Anda adalah seorang guru TK yang sedang menulis paragraf naratif untuk buku raport (laporan perkembangan anak).
-Tuliskan 1 paragraf narasi untuk kategori: ${kategori}.
+    const systemPrompt = `Anda adalah seorang guru TK yang sedang menulis paragraf naratif untuk buku raport (laporan perkembangan anak).`;
+
+    const userPrompt = `Tuliskan 1 paragraf narasi untuk kategori: ${kategori}.
 Nama anak: ${titleCaseName}.
 
 Berikut adalah data indikator dan tingkat pencapaiannya:
@@ -55,11 +61,52 @@ Instruksi gaya penulisan:
 
 Tuliskan narasinya saja tanpa tambahan salam atau penutup.`;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    return response.text();
+    // Build model list with primary model first
+    const modelsToTry = [primaryModel, ...MODELS_TO_TRY.filter(m => m !== primaryModel)];
+
+    let lastError: any = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        const response = await fetch(OPENROUTER_API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model: modelName,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt },
+            ],
+            temperature: 0.4,
+            max_tokens: 2048,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          console.log(`[AI] Berhasil generate narasi dengan model: ${modelName}`);
+          return data.choices[0].message.content;
+        } else {
+          throw new Error("Format balasan OpenRouter tidak sesuai");
+        }
+      } catch (modelError: any) {
+        console.warn(`[AI] Model ${modelName} gagal:`, modelError.message);
+        lastError = modelError;
+      }
+    }
+
+    throw new Error(lastError?.message || "Semua model AI gagal dicoba.");
   } catch (error: any) {
-    console.error("Gemini API Error:", error);
+    console.error("OpenRouter API Error:", error);
     throw new Error(error.message || "Gagal menghasilkan narasi dari AI.");
   }
 }

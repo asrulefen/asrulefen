@@ -4,7 +4,8 @@ import { Save, KeyRound, FileUp, FileDown, UploadCloud } from "lucide-react";
 
 export default function PengaturanPage() {
   const [settings, setSettings] = useState({
-    gemini_api_key: "",
+    openrouter_api_key: "",
+    ai_model: "google/gemini-2.0-flash-001",
     nama_sekolah: "TK PGRI NUR IKHLAS",
     kop_1: "YAYASAN PEMBINA LEMBAGA PENDIDIKAN",
     kop_2: "PERSATUAN GURU REPUBLIK INDONESIA JAWA TIMUR",
@@ -26,7 +27,6 @@ export default function PengaturanPage() {
     kec_lembaga: "SEMANDING",
     kab_lembaga: "TUBAN",
     prov_lembaga: "JAWA TIMUR",
-    gemini_model: "gemini-1.5-flash"
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -105,35 +105,35 @@ export default function PengaturanPage() {
 
 
         <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-          <h2 className="font-bold border-b pb-2 text-slate-700">Pengaturan AI (Gemini)</h2>
+          <h2 className="font-bold border-b pb-2 text-slate-700">Pengaturan AI (OpenRouter)</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium mb-1 text-emerald-700">Gemini API Key</label>
+              <label className="block text-sm font-medium mb-1 text-emerald-700">OpenRouter API Key</label>
               <input 
                 type="text" 
                 className="w-full p-2 border-2 border-slate-200 rounded-lg" 
-                value={settings.gemini_api_key || ""} 
-                onChange={e => setSettings({...settings, gemini_api_key: e.target.value})}
-                placeholder="Paste API Key Gemini Anda di sini..."
+                value={settings.openrouter_api_key || ""} 
+                onChange={e => setSettings({...settings, openrouter_api_key: e.target.value})}
+                placeholder="Paste API Key OpenRouter di sini (sk-or-v1-...)..."
               />
               <p className="text-xs text-slate-500 mt-1">
-                Dapatkan API key secara gratis di <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">Google AI Studio</a>.
+                Dapatkan API key di <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">OpenRouter.ai</a>. Kosongkan jika ingin pakai key bawaan.
               </p>
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium mb-1 text-emerald-700">Model AI</label>
               <select 
                 className="w-full p-2 border-2 border-slate-200 rounded-lg"
-                value={settings.gemini_model || "gemini-1.5-flash"}
-                onChange={e => setSettings({...settings, gemini_model: e.target.value})}
+                value={settings.ai_model || "google/gemini-2.0-flash-001"}
+                onChange={e => setSettings({...settings, ai_model: e.target.value})}
               >
-                <option value="gemini-1.5-flash">Gemini 1.5 Flash (Cepat & Direkomendasikan)</option>
-                <option value="gemini-1.5-pro">Gemini 1.5 Pro (Lebih Pintar)</option>
-                <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
-                <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+                <option value="google/gemini-2.0-flash-001">Gemini 2.0 Flash (Paling Hemat & Direkomendasikan)</option>
+                <option value="google/gemini-2.5-flash">Gemini 2.5 Flash (Lebih Pintar)</option>
+                <option value="meta-llama/llama-3.1-8b-instruct">Llama 3.1 8B (Gratis)</option>
+                <option value="mistralai/mistral-7b-instruct">Mistral 7B (Gratis)</option>
               </select>
-              <p className="text-xs text-slate-500 mt-1">Pilih model AI yang akan digunakan untuk menggenerate narasi raport.</p>
+              <p className="text-xs text-slate-500 mt-1">Pilih model AI paling hemat token. Jika gagal, otomatis coba model lain.</p>
             </div>
           </div>
         </div>

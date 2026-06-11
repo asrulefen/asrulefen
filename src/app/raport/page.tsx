@@ -31,6 +31,13 @@ export default function RaportPage() {
     literasi: [],
     projek: []
   });
+  // Track DB IDs per kategori untuk delete
+  const [fotoIds, setFotoIds] = useState<{ [key: string]: number[] }>({
+    agama: [],
+    jati_diri: [],
+    literasi: [],
+    projek: []
+  });
   const [activeCropCategory, setActiveCropCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -50,6 +57,21 @@ export default function RaportPage() {
       if (Array.isArray(data)) setIndikatorList(data);
       else console.error("Error fetching indikator:", data);
     });
+    // Load foto tersimpan dari DB per semester
+    fetch(`/api/foto-kegiatan?semester=${semesterIndikator}`).then(r => r.json()).then(data => {
+      if (Array.isArray(data)) {
+        const grouped: { [key: string]: string[] } = { agama: [], jati_diri: [], literasi: [], projek: [] };
+        const groupedIds: { [key: string]: number[] } = { agama: [], jati_diri: [], literasi: [], projek: [] };
+        data.forEach((row: any) => {
+          if (grouped[row.kategori]) {
+            grouped[row.kategori].push(row.foto_base64);
+            groupedIds[row.kategori].push(row.id);
+          }
+        });
+        setFotos(grouped);
+        setFotoIds(groupedIds);
+      }
+    }).catch(e => console.error("Gagal load foto:", e));
   }, [semesterIndikator]);
 
 
@@ -163,6 +185,16 @@ export default function RaportPage() {
   };
 
   const removeFoto = (category: string, index: number) => {
+    // Hapus dari DB jika ada ID-nya
+    const dbId = fotoIds[category]?.[index];
+    if (dbId) {
+      fetch(`/api/foto-kegiatan?id=${dbId}`, { method: 'DELETE' }).catch(e => console.error('Gagal hapus foto dari DB:', e));
+      setFotoIds(prev => {
+        const newIds = [...prev[category]];
+        newIds.splice(index, 1);
+        return { ...prev, [category]: newIds };
+      });
+    }
     setFotos(prev => {
       const newArr = [...prev[category]];
       newArr.splice(index, 1);
@@ -400,18 +432,34 @@ export default function RaportPage() {
 
       {activeCropCategory && (
         <ImageCropper 
-          onCropComplete={(result) => {
+          onCropComplete={async (result) => {
             if (result) {
+              const newPhotos = Array.isArray(result) ? result : [result];
+              const cat = activeCropCategory;
+              
+              // Simpan ke state
               setFotos(prev => {
-                const newArr = [...prev[activeCropCategory]];
-                if (Array.isArray(result)) {
-                  newArr.push(...result);
-                } else {
-                  newArr.push(result);
-                }
-                // Batasi maksimal 9 foto
-                return { ...prev, [activeCropCategory]: newArr.slice(0, 9) };
+                const newArr = [...prev[cat], ...newPhotos].slice(0, 9);
+                return { ...prev, [cat]: newArr };
               });
+              
+              // Simpan ke DB agar bisa dipakai untuk semua anak
+              try {
+                const res = await fetch('/api/foto-kegiatan', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ kategori: cat, semester: semesterIndikator, fotos: newPhotos })
+                });
+                const data = await res.json();
+                if (data.insertedIds) {
+                  setFotoIds(prev => ({
+                    ...prev,
+                    [cat]: [...prev[cat], ...data.insertedIds]
+                  }));
+                }
+              } catch (e) {
+                console.error('Gagal simpan foto ke DB:', e);
+              }
             }
             setActiveCropCategory(null);
           }}  
