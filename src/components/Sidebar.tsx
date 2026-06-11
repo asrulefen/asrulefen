@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, FileText, Settings, LayoutDashboard, ListChecks, LogOut, Archive } from "lucide-react";
+import { Users, FileText, Settings, LayoutDashboard, ListChecks, LogOut, Archive, HeartPulse } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -19,6 +19,7 @@ export function Sidebar() {
     { name: "Dashboard", href: "/", icon: LayoutDashboard },
     { name: "Data Siswa", href: "/siswa", icon: Users },
     { name: "Indikator", href: "/indikator", icon: ListChecks },
+    { name: "Data Fisik", href: "/data-fisik", icon: HeartPulse },
     { name: "Input Raport", href: "/raport", icon: FileText },
     { name: "Arsip Raport", href: "/arsip", icon: Archive },
     { name: "Pengaturan", href: "/pengaturan", icon: Settings },

@@ -74,6 +74,22 @@ export default function RaportPage() {
     }).catch(e => console.error("Gagal load foto:", e));
   }, [semesterIndikator]);
 
+  // Auto-load data fisik & kehadiran saat pilih siswa
+  useEffect(() => {
+    if (!selectedSiswa) return;
+    fetch(`/api/data-fisik?siswa_id=${selectedSiswa}&semester=${semesterIndikator}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data && data.siswa_id) {
+          setTinggi(data.tinggi || "");
+          setBerat(data.berat || "");
+          setSakit(data.sakit || "0");
+          setIzin(data.izin || "0");
+          setTanpaKeterangan(data.tanpa_keterangan || "0");
+        }
+      })
+      .catch(e => console.error("Gagal load data fisik:", e));
+  }, [selectedSiswa, semesterIndikator]);
 
   const savePengaturan = async (key: string, value: string) => {
     try {

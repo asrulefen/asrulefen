@@ -6,7 +6,7 @@ const db = createClient({
 });
 
 async function migrate() {
-  console.log("Membuat tabel foto_kegiatan...");
+  console.log("Membuat tabel foto_kegiatan dan data_fisik...");
 
   await db.executeMultiple(`
     CREATE TABLE IF NOT EXISTS foto_kegiatan (
@@ -17,9 +17,23 @@ async function migrate() {
       user_id TEXT DEFAULT '1',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
+
+    CREATE TABLE IF NOT EXISTS data_fisik (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      siswa_id INTEGER NOT NULL,
+      semester TEXT NOT NULL DEFAULT '1',
+      tinggi TEXT DEFAULT '',
+      berat TEXT DEFAULT '',
+      sakit TEXT DEFAULT '0',
+      izin TEXT DEFAULT '0',
+      tanpa_keterangan TEXT DEFAULT '0',
+      user_id TEXT DEFAULT '1',
+      UNIQUE(siswa_id, semester, user_id)
+    );
   `);
 
-  console.log("✅ Tabel foto_kegiatan berhasil dibuat!");
+  console.log("✅ Tabel berhasil dibuat!");
 }
 
 migrate().catch(console.error);
+
