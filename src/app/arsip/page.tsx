@@ -128,9 +128,13 @@ export default function ArsipPage() {
                     <td className="p-4 font-medium text-slate-800">{arsip.nama_siswa}</td>
                     <td className="p-4 text-slate-600">{arsip.semester}</td>
                     <td className="p-4 text-slate-600">
-                      {new Date(arsip.created_at).toLocaleDateString('id-ID', {
-                        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-                      })}
+                      {(() => {
+                        // DB returns "YYYY-MM-DD HH:MM:SS" in UTC. Convert to ISO format to parse correctly as UTC.
+                        const dateStr = arsip.created_at.includes('T') ? arsip.created_at : arsip.created_at.replace(' ', 'T') + 'Z';
+                        return new Date(dateStr).toLocaleDateString('id-ID', {
+                          day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                        });
+                      })()}
                     </td>
                     <td className="p-4 flex justify-center space-x-2">
                       <button
