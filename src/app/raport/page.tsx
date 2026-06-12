@@ -77,7 +77,7 @@ export default function RaportPage() {
   // Auto-load data fisik & kehadiran saat pilih siswa
   useEffect(() => {
     if (!selectedSiswa) return;
-    fetch(`/api/data-fisik?siswa_id=${selectedSiswa}&semester=${semesterIndikator}`)
+    fetch(`/api/data-fisik?siswa_id=${selectedSiswa}&semester=2`)
       .then(r => r.json())
       .then(data => {
         if (data && data.siswa_id) {

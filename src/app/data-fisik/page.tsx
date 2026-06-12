@@ -14,7 +14,7 @@ interface SiswaData {
 
 export default function DataFisikPage() {
   const [siswaList, setSiswaList] = useState<SiswaData[]>([]);
-  const [semester, setSemester] = useState("1");
+  const [semester] = useState("2");
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
@@ -103,14 +103,6 @@ export default function DataFisikPage() {
           </p>
         </div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          <select
-            className="p-2.5 border-2 border-slate-200 rounded-xl font-semibold text-slate-700 focus:border-emerald-500"
-            value={semester}
-            onChange={e => setSemester(e.target.value)}
-          >
-            <option value="1">Semester 1</option>
-            <option value="2">Semester 2</option>
-          </select>
           <button
             onClick={handleSaveAll}
             disabled={isSaving || isLoading}
