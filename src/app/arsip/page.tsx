@@ -16,6 +16,7 @@ export default function ArsipPage() {
   const [arsipList, setArsipList] = useState<Arsip[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [downloadingId, setDownloadingId] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
   const fetchArsip = async () => {
     setIsLoading(true);
@@ -38,8 +39,36 @@ export default function ArsipPage() {
   const handleDelete = async (id: number) => {
     if (confirm("Yakin ingin menghapus arsip ini?")) {
       await fetch(`/api/arsip/${id}`, { method: "DELETE" });
+      setSelectedIds(prev => prev.filter(selectedId => selectedId !== id));
       fetchArsip();
     }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    if (confirm(`Yakin ingin menghapus ${selectedIds.length} arsip terpilih?`)) {
+      await fetch(`/api/arsip`, { 
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: selectedIds })
+      });
+      setSelectedIds([]);
+      fetchArsip();
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.length === arsipList.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(arsipList.map(a => a.id));
+    }
+  };
+
+  const toggleSelect = (id: number) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
   };
 
   const handleDownload = async (id: number, filename: string) => {
@@ -100,6 +129,15 @@ export default function ArsipPage() {
             Riwayat raport yang sudah dicetak. Otomatis terhapus setelah 6 bulan.
           </p>
         </div>
+        {selectedIds.length > 0 && (
+          <button
+            onClick={handleBulkDelete}
+            className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-2 rounded-xl font-bold flex items-center space-x-2 transition-colors border border-red-200"
+          >
+            <Trash2 className="w-5 h-5" />
+            <span>Hapus Terpilih ({selectedIds.length})</span>
+          </button>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -116,6 +154,14 @@ export default function ArsipPage() {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
+                  <th className="p-4 w-10">
+                    <input 
+                      type="checkbox" 
+                      className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                      checked={selectedIds.length === arsipList.length && arsipList.length > 0}
+                      onChange={toggleSelectAll}
+                    />
+                  </th>
                   <th className="p-4 font-semibold text-slate-700">Nama Siswa</th>
                   <th className="p-4 font-semibold text-slate-700">Semester</th>
                   <th className="p-4 font-semibold text-slate-700">Tanggal Dibuat</th>
@@ -125,6 +171,14 @@ export default function ArsipPage() {
               <tbody className="divide-y divide-slate-100">
                 {arsipList.map((arsip) => (
                   <tr key={arsip.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="p-4">
+                      <input 
+                        type="checkbox" 
+                        className="w-4 h-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                        checked={selectedIds.includes(arsip.id)}
+                        onChange={() => toggleSelect(arsip.id)}
+                      />
+                    </td>
                     <td className="p-4 font-medium text-slate-800">{arsip.nama_siswa}</td>
                     <td className="p-4 text-slate-600">{arsip.semester}</td>
                     <td className="p-4 text-slate-600">
