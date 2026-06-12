@@ -443,6 +443,31 @@ export default function RaportPage() {
           {renderSection("Jati Diri", "JATI_DIRI", "jatiDiri", "jati_diri")}
           {renderSection("Dasar-dasar Literasi & STEAM", "LITERASI", "literasi", "literasi")}
           {renderSection("Projek / Kokurikuler", "PROJEK", "projek", "projek")}
+
+          {/* Download Buttons Bottom */}
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full mt-6 flex-wrap justify-end p-4 sm:p-6 bg-white rounded-3xl border border-slate-200 shadow-sm">
+            <button
+              onClick={() => handleDownloadDocx('identitas')}
+              className="bg-sky-600 hover:bg-sky-700 text-white px-5 py-3 rounded-2xl flex items-center justify-center space-x-2 font-bold shadow-lg shadow-sky-600/30 transition-transform active:scale-95 text-sm whitespace-nowrap flex-1 sm:flex-none"
+            >
+              <Download className="w-5 h-5" />
+              <span>Cetak Identitas</span>
+            </button>
+            <button
+              onClick={() => handleDownloadDocx('raport')}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-2xl flex items-center justify-center space-x-2 font-bold shadow-lg shadow-emerald-600/30 transition-transform active:scale-95 text-sm whitespace-nowrap flex-1 sm:flex-none"
+            >
+              <Download className="w-5 h-5" />
+              <span>Cetak Isi Raport</span>
+            </button>
+            <button
+              onClick={() => handleDownloadDocx('gabungan')}
+              className="bg-violet-600 hover:bg-violet-700 text-white px-5 py-3 rounded-2xl flex items-center justify-center space-x-2 font-bold shadow-lg shadow-violet-600/30 transition-transform active:scale-95 text-sm whitespace-nowrap flex-1 sm:flex-none"
+            >
+              <Download className="w-5 h-5" />
+              <span>Cetak Keduanya</span>
+            </button>
+          </div>
         </div>
       </div>
 
